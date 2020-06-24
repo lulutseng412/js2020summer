@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+    <style>
+        .completed {
+          text-decoration: line-through
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container my-3">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">待辦事項</span>
+          </div>
+          <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="addTodo" >新增</button>
+          </div>
+        </div>
+        <div class="card text-center">
+          <ul class="list-group list-group-flush text-left" id="todoList">
+          </ul>
+          <div class="card-footer d-flex justify-content-between">
+            <span>還有 <span id="taskCount">0</span> 筆任務</span>
+            <a href="#" id="clearTask">清除所有任務</a>
+          </div>
+        </div>
+    </div>
+    <script>
+        var todoData = [];
+        //抓到元素
+        var input = document.querySelector('#newTodo');
+        var addMissionBtn = document.querySelector('#addTodo');
+        var list = document.querySelector('#todoList');
+        var clearMissionbtn = document.querySelector('#clearTask');
+
+        //新增任務 監聽
+        addMissionBtn.addEventListener('click',function(){
+            if (input.value !== '') {
+                todoData.push({
+                  id: Math.floor(Date.now()),
+                  title: input.value,
+                  completed: false,
+                });
+            }
+            renderView(todoData);
+        });
+
+        //清除所有任務 監聽
+        clearMissionbtn.addEventListener('click',function(){
+            todoData = [];
+            renderView(todoData);
+        })
+
+        //畫面
+        function renderView(todoData){
+            var innerHtmlString = "";
+            todoData.forEach(function(item){
+                innerHtmlString += `<li class="list-group-item">
+                                        <div class="d-flex">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" ${item.completed ? 'checked' : ''} data-action="complete" data-id="${item.id}">
+                                                <label class="form-check-label ${item.completed ? 'completed' : ''}" data-action="complete" data-id="${item.id}"> ${item.title}</label>
+                                            </div>
+                                            <button type="button" class="close ml-auto" aria-label="Close">
+                                                <span aria-hidden="true" data-action="remove" data-id="${item.id}">&times;</span>
+                                            </button>
+                                        </div>
+                                    </li>`
+            });
+            //塞回去list
+            list.innerHTML = innerHtmlString;
+            //刪除按鈕的監聽
+            var removebtns = document.querySelectorAll('.close');
+            removebtns.forEach(function(item){
+                item.addEventListener('click',removeData);
+            })
+            //checkbox的監聽
+            var checkboxArray = document.querySelectorAll('.form-check-input');
+            checkboxArray.forEach(function(item){
+                item.addEventListener('click',Changecheckbox);
+            });
+            //從新計算任務
+            var counts = CountMission(todoData);
+            document.querySelector('#taskCount').textContent = counts;
+        }
+        
+        //移除代辦事項
+        function removeData(e){
+            //修改todo
+            var completednode = e.target.dataset.id;
+            todoData.forEach(function(item,index){
+              if(item.id == e.target.dataset.id){
+                todoData.splice(index,1);
+                renderView(todoData);
+              }
+            })
+        }
+        
+        //checkbox
+        function Changecheckbox(e){
+          console.log(e.target.checked);
+          todoData.forEach(function(item){
+            if(item.id == e.target.dataset.id){
+              if(e.target.checked){//表示是打勾(已完成)
+                item.completed = true;  
+              }else{
+                item.completed = false;
+              }
+            }
+          });
+          renderView(todoData);
+        }
+        
+        //Mission Count
+        function CountMission(todoData){
+          var count = 0;
+          todoData.forEach(function(item){
+            if(item.completed == false){count++;}
+          });
+          return count;
+        }
+    </script>
+</body>
+</html>
