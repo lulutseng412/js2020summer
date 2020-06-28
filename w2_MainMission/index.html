@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .completed {
+      text-decoration: line-through
+    }
+  </style>
+</head>
+<body>
+
+  <div id="products" class="container my-3">
+  </div>
+
+  <div id="app" class="container my-3">
+    <button id="get" class="btn btn-outline-primary">Get</button>
+    <button id="post" class="btn btn-outline-primary">Post</button>
+    <button id="patch" class="btn btn-outline-primary">Patch</button>
+    <button id="delete" class="btn btn-outline-primary">Delete</button>
+  </div>
+  <script>
+
+    document.querySelector('#get').addEventListener('click', getData);
+    document.querySelector('#post').addEventListener('click', postData);
+    document.querySelector('#patch').addEventListener('click', patchData);
+    document.querySelector('#delete').addEventListener('click', deleteData);
+
+    var uuid = '2b3d8952-95e7-4cb1-a50e-78c76f622c8c'; //每個人獨立的API路徑(固定的)
+    var token = 'U8Xq3rV18ElM70bFQCKZTMPqXfPX4yEJdA1yeRSOpNxm2Mmp3ogYt8w2iqKx'; //驗證使用會不斷變更
+    var apiPath = 'https://course-ec-api.hexschool.io/'; //站點路徑(固定的)
+    var products = document.querySelector('#products');
+
+    // 資料格式
+    var sampleData = {
+      title: '',
+      category: '',
+      content: '',
+      description:'',
+      imageUrl: [
+        'https://imags.unsplash.com'
+      ],
+      enabled: true,
+      origin_price: 0,
+      price: 0,
+      unit: '',
+    }
+
+    // "Authorization": "Bearer {token}",
+    // axios 設定說明：https://github.com/axios/axios#config-defaults
+    axios.defaults.headers['Authorization'] = `Bearer ${token}`
+
+    function updateView(dataList){
+        var innerHtmlString = "";
+        dataList.forEach(function(item){
+            innerHtmlString += `<div class="card" style="width: 18rem;">
+                                <img src="${item.imageUrl[0]}" class="card-img-top" alt="${item.title}">
+                                <div class="card-body">
+                                  <h5 class="card-title">${item.title}</h5>
+                                  <p class="card-text">${item.content}</p>
+                                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                           </div>`
+
+        });
+        //塞回去畫面
+        products.innerHTML = innerHtmlString;
+    }
+
+    function getData() {
+      console.log('getData');
+      //GET api/{uuid}/admin/ec/products
+      var api = `${apiPath}api/${uuid}/admin/ec/products`;
+      axios.get(api)
+        .then(function(res){//call back function
+            console.log(res.data.data);
+            //組畫面
+            updateView(res.data.data);
+        })
+        .catch(function(msg){
+            console.log('=== getData catch ===');
+            console.log(msg);
+        })
+    }
+
+    //POST api/{uuid}/admin/ec/product //新增商品
+    function postData() {
+      console.log('postData');
+      var api = `${apiPath}api/${uuid}/admin/ec/product`;
+      var data = {
+        //sampleData格式,將新增的資料帶入
+      };
+      axios.post(api,data)
+        .then(function(res){
+            console.log(res);
+        })
+        .catch(function(msg){
+            console.log('=== getData catch ===');
+            console.log(msg);
+        })
+    }
+
+    //PATCH api/{uuid}/admin/ec/product/{id} //填入修改的商品ID
+    function patchData() {
+      console.log('patchData');
+      var api = `${apiPath}api/${uuid}/admin/ec/product/{id}`;
+      var data = {
+        //sampleData格式,將修改的資料帶入
+      };
+      axios.patch(api,data)
+        .then(function(res){
+            console.log(res);
+        })
+        .catch(function(msg){
+            console.log('=== patchData catch ===');
+            console.log(msg);
+        })
+    }
+    
+    //DELETE api/{uuid}/admin/ec/product/{id} //填入刪除的商品ID
+    function deleteData() {
+      console.log('deleteData');
+      var api = `${apiPath}api/${uuid}/admin/ec/product/{id}`;
+      axios.delete(api)
+        .then(function(res){//call back function
+            console.log(res);
+        })
+        .catch(function(msg){
+            console.log('=== deleteData catch ===');
+            console.log(msg);
+        })
+    }
+
+    //進入網頁後抓取資料
+    getData();
+
+  </script>
+</body>
+</html>
