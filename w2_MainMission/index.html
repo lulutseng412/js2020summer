@@ -32,7 +32,7 @@
     document.querySelector('#delete').addEventListener('click', deleteData);
 
     var uuid = '2b3d8952-95e7-4cb1-a50e-78c76f622c8c'; //每個人獨立的API路徑(固定的)
-    var token = 'U8Xq3rV18ElM70bFQCKZTMPqXfPX4yEJdA1yeRSOpNxm2Mmp3ogYt8w2iqKx'; //驗證使用會不斷變更
+    var token = ''; //驗證使用會不斷變更
     var apiPath = 'https://course-ec-api.hexschool.io/'; //站點路徑(固定的)
     var products = document.querySelector('#products');
 
@@ -72,10 +72,10 @@
         products.innerHTML = innerHtmlString;
     }
 
+    //GET api/{uuid}/ec/products 前台
     function getData() {
       console.log('getData');
-      //GET api/{uuid}/admin/ec/products
-      var api = `${apiPath}api/${uuid}/admin/ec/products`;
+      var api = `${apiPath}api/${uuid}/ec/products`;
       axios.get(api)
         .then(function(res){//call back function
             console.log(res.data.data);
