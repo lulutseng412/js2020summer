@@ -40,8 +40,13 @@
         var clearMissionbtn = document.querySelector('#clearTask');
 
         //新增任務 監聽
-        addMissionBtn.addEventListener('click',function(){
-            if (input.value !== '') {
+        addMissionBtn.addEventListener('click',addMission);
+        //清除所有任務 監聽
+        clearMissionbtn.addEventListener('click',clearAllMission)
+        
+        //新增任務
+        function addMission(){
+          if (input.value !== '') {
                 todoData.push({
                   id: Math.floor(Date.now()),
                   title: input.value,
@@ -49,13 +54,13 @@
                 });
             }
             renderView(todoData);
-        });
+        }
 
-        //清除所有任務 監聽
-        clearMissionbtn.addEventListener('click',function(){
-            todoData = [];
+        //清除所有任務
+        function clearAllMission(){
+          todoData = [];
             renderView(todoData);
-        })
+        }
 
         //畫面
         function renderView(todoData){
@@ -64,8 +69,8 @@
                 innerHtmlString += `<li class="list-group-item">
                                         <div class="d-flex">
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" ${item.completed ? 'checked' : ''} data-action="complete" data-id="${item.id}">
-                                                <label class="form-check-label ${item.completed ? 'completed' : ''}" data-action="complete" data-id="${item.id}"> ${item.title}</label>
+                                                <input id="${item.id}" type="checkbox" class="form-check-input" ${item.completed ? 'checked' : ''} data-action="complete" data-id="${item.id}">
+                                                <label for="${item.id}" class="form-check-label ${item.completed ? 'completed' : ''}" data-action="complete" data-id="${item.id}"> ${item.title}</label>
                                             </div>
                                             <button type="button" class="close ml-auto" aria-label="Close">
                                                 <span aria-hidden="true" data-action="remove" data-id="${item.id}">&times;</span>
