@@ -85,7 +85,7 @@
             document.cookie = `token=${token}; expires=${new Date(expired * 1000)}; path=/`;
             
             //登入後轉址 *ajax為非同步行為
-            window.location = '/w4_MainMission/Products.html';
+            window.location = 'Products.html';
           }).catch((error) => {
             console.log(error);
           });
