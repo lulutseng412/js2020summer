@@ -74,9 +74,11 @@ new Vue({
         },
         delProduct(){
             //DELETE api/{uuid}/admin/ec/product/{id}
-            var url = `${this.api.path}${this.api.uuid}/admin/ec/products?page=${this.tempProduct.id}`;
-            axios.delete(url).then((resdata)=>{
+            const urldelProduct = `${this.api.path}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
+            axios.delete(urldelProduct).then((resdata)=>{
                 //console.log(res);
+                //重新取得產品列表
+                this.getProducts();
             })
             .catch(function(msg){
                 console.log('=== deleteData catch ===');
@@ -90,8 +92,6 @@ new Vue({
 
             //把彈跳視窗隱藏
             $('#delproductsModal').modal('hide');
-            //重新取得產品列表
-            this.getProducts();
         }
     },
     created(){
