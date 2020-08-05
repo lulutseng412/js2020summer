@@ -1,5 +1,5 @@
 {
-  "name": "w6_mainmission",
+  "name": "w7_mainmission",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "bootstrap": "^4.5.1",
     "core-js": "^3.6.5",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.5.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-loading-overlay": "^3.3.2",

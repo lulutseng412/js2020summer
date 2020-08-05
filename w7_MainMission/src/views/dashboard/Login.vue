@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+      <div>
             <form class="form-signin" @submit.prevent="signin">
               <h1 class="h3 mb-3 font-weight-normal">
                 請先登入
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     signin () {
-      const api = `${process.env.VUE_APP_APIPATH}/auth/login`
+      const api = `${process.env.VUE_APP_APIPATH}/api/auth/login`
       this.$http.post(api, this.user).then((response) => {
         const { token } = response.data
         const { expired } = response.data
@@ -66,10 +66,10 @@ export default {
       console.log('token 已清除')
     },
     getData () {
-      // 取得 token 的 cookies（注意取得的時間點）
+      // 取得 token 的 cookies
       this.token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
       // API
-      const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/products`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/admin/ec/products`
       this.$http.defaults.headers.common.Authorization = `Bearer ${this.token}`
       this.$http.get(api).then((response) => {
         console.log(response)
