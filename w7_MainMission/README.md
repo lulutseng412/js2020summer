@@ -1,4 +1,4 @@
-# w6_mainmission
+# w7_MainMission
 
 ## Project setup
 ```
