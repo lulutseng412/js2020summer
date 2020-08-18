@@ -74,7 +74,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-4">
-                <div v-for="i in 5" :key="i + 'img'" class="form-group">
+                <div v-for="i in 3" :key="i + 'img'" class="form-group">
                   <label :for="'img' + i">輸入圖片網址</label>
                   <input :id="'img' + i" v-model="tempProduct.imageUrl[i - 1]" type="text" class="form-control" placeholder="請輸入圖片連結" >
                 </div>
@@ -200,7 +200,7 @@ export default {
   methods: {
     getProducts (page = 1) {
       this.isLoading = true
-      const api = `${this.api.path}/api/${this.api.uuid}/admin/ec/products?page=${page}`
+      const api = `${this.api.path}/api/${this.api.uuid}/admin/ec/products?page=${page}&orderBy=updated_at&sort=desc`
       this.$http.get(api).then((response) => {
         this.products = response.data.data
         this.pagination = response.data.meta.pagination
@@ -238,18 +238,18 @@ export default {
       })
     },
     uploadFile () { // 上傳檔案
-      const uploadedFile = this.$refs.file.files[0]
+      const uploadedFile = this.$refs.file.files[0] // 取得DOM中的檔案資訊
       const formData = new FormData()
-      formData.append('file', uploadedFile)
+      formData.append('file', uploadedFile) // 轉成Form Data上傳 加上一個新欄位file
       const url = `${this.api.path}/api/${this.api.uuid}/admin/storage`
-      this.status.fileUploading = true
+      this.status.fileUploading = true // 圖片上傳等待動畫
       this.$http.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then((response) => {
         this.status.fileUploading = false
-        if (response.status === 200) {
+        if (response.status === 200) { // 回傳200成功
           this.tempProduct.imageUrl.push(response.data.data.path)
         }
       }).catch(() => {

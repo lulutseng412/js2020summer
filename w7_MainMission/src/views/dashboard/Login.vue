@@ -54,7 +54,7 @@ export default {
         const { expired } = response.data
         // 寫入 cookie token expires 設置有效時間
         document.cookie = `hexToken=${token};expires=${new Date(expired * 1000)};`
-        alert('登入成功')
+        // alert('登入成功')
         // 畫面導向
         this.$router.push('/dashboard/products')
       }).catch((error) => {
