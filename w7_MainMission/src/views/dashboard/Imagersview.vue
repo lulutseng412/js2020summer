@@ -40,7 +40,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">是否刪除該筆資料 (刪除後將無法恢復)。</div>
+          <div class="modal-body">是否刪除該圖片 (刪除後將無法恢復)。</div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
             <button type="button" class="btn btn-danger" @click="deleteStorage">確認刪除</button>

@@ -4,7 +4,7 @@
         <div>products</div>
         <div v-for="item in products" :key="item.id">
             <span>{{ item.title }}</span>
-            <span>{{ item.content }}</span>
+            <span v-html="item.content"></span>
             <span>{{ item.origin_price }}</span>
             <router-link :to="`/product/${item.id}`">詳細內容</router-link>
         </div>
@@ -16,7 +16,11 @@ export default {
   data () {
     return {
       isLoading: false,
-      products: []
+      products: [],
+      api: {
+        uuid: process.env.VUE_APP_UUID,
+        path: process.env.VUE_APP_APIPATH
+      }
     }
   },
   created () {
@@ -25,7 +29,7 @@ export default {
     //   this.isLoading = false;
     // }, 3000);
     this.isLoading = true
-    this.$http.get(`${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`)
+    this.$http.get(`${this.api.path}/api/${this.api.uuid}/ec/products`)
       .then((res) => {
         this.isLoading = false
         this.products = res.data.data
